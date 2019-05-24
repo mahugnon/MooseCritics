@@ -3,7 +3,7 @@ self open model inspect
 "
 Class {
 	#name : #MooseCriticsBrowser,
-	#superclass : #ComposableModel,
+	#superclass : #ComposablePresenter,
 	#instVars : [
 		'ruleRunner',
 		'toolbar',
@@ -28,7 +28,7 @@ MooseCriticsBrowser class >> defaultSpec [
 					labelsRow
 						newColumn: #rulesLabel;
 						newColumn: #entitiesLabel ]
-					height: self labelHeight;
+					height: self labelHeight ;
 				newRow: [ :treesRow |
 					treesRow
 						newColumn: #rulesTree;
@@ -135,24 +135,28 @@ MooseCriticsBrowser >> initializeWidgets [
 MooseCriticsBrowser >> loadMooseModel [
 	| file fileReference |
 	file := UIManager default
+		chooseExistingFileReference: 'Load a Moose model'
+		extensions: #('mse')
+		path: FileSystem workingDirectory
+		preview: nil.	"UIManager default
 		fileOpen: 'Load a Moose model'
 		extensions: #('mse')
-		path: FileSystem workingDirectory.
+		path: FileSystem workingDirectory."
 	file
-		ifNotNil: [ | model fileName |
-			fileName := file name.
-			fileReference := fileName asFileReference.
+		ifNotNil: [ | model |
+			
+			fileReference :=file.
 			fileReference
 				readStreamDo: [ :readStream | 
 					model := MooseModel new
-						name: file name;
+						name: file basename;
 						importFromMSEStream: readStream.
 					model rootFolder: fileReference parent.
 					model install ].
 			self ruleRunner: (MCRulesRunner on: model).
 			self initializeBrowserRulesForRuleRunner.
 			"self updateConfigurationWidgets."
-			self title: self baseTitle , ' - ' , fileName.
+			self title: self baseTitle , ' - ' , file basename.
 			self informStatusLabel: 'Moose model loaded correctly.' ]
 ]
 

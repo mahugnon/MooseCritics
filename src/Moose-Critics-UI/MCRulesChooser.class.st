@@ -63,6 +63,7 @@ MCRulesChooser >> initializePresenter [
 
 { #category : #accessing }
 MCRulesChooser >> leftListInitialItems [
+	1 halt.
 	^ MCRulesManager allRules
 ]
 

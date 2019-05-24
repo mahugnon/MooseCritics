@@ -29,8 +29,8 @@ MCBrowserAbstractRule >> entities: anObject [
 
 { #category : #accessing }
 MCBrowserAbstractRule >> iconInBrowser [
-
-	^ iconInBrowser ifNil: [ iconInBrowser := #testNotRun asIcon ]
+	^ iconInBrowser
+		ifNil: [ iconInBrowser := self iconNamed: #testNotRun ]
 ]
 
 { #category : #accessing }
